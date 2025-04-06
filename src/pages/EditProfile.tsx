@@ -43,6 +43,24 @@ const EditProfile = () => {
     
     if (!user) return;
     
+    if (!name || !email) {
+      toast({
+        title: "Error",
+        description: "Name and email are required",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (user.role === 'incharge' && !club) {
+      toast({
+        title: "Error",
+        description: "Please select a club",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     // Update the user profile
     const updatedUser = {
       ...user,
@@ -58,8 +76,8 @@ const EditProfile = () => {
       description: "Your profile has been updated successfully.",
     });
     
-    // Navigate back
-    navigate(-1);
+    // Navigate back to appropriate page based on role
+    navigate(user.role === 'incharge' ? '/dashboard' : '/events');
   };
   
   return (
@@ -126,7 +144,7 @@ const EditProfile = () => {
                   <Button 
                     type="button" 
                     variant="outline"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate(user?.role === 'incharge' ? '/dashboard' : '/events')}
                   >
                     Cancel
                   </Button>

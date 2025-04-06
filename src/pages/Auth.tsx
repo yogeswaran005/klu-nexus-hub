@@ -1,15 +1,17 @@
 
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
+import { useAuth } from "../context/AuthContext";
 
 const Auth = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [selectedTab, setSelectedTab] = useState("signin");
   
   // Form states
@@ -33,37 +35,70 @@ const Auth = () => {
   
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here would be authentication logic
     
-    // For now, let's simulate a successful login
-    localStorage.setItem('user', JSON.stringify({
+    // Basic validation
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Simulate a successful login
+    const userData = {
       email,
       role,
-      name: "Demo User",
+      name: role === "incharge" ? `${club} Incharge` : "KLU Student",
       club: role === "incharge" ? club : null
-    }));
+    };
+    
+    login(userData);
+    
     toast({
-      title: "Success!",
+      title: "Welcome!",
       description: "You have successfully signed in.",
     });
-    setIsSignedIn(true);
+    
+    // Redirect based on role
+    navigate(role === 'incharge' ? '/dashboard' : '/events');
   };
   
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here would be registration logic
     
-    // For now, let's simulate a successful registration
+    // Basic validation
+    if (!name || !email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (role === 'incharge' && !club) {
+      toast({
+        title: "Error",
+        description: "Please select a club",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Simulate a successful registration
     toast({
       title: "Account created!",
       description: "Your account has been created successfully. You can now sign in.",
     });
+    
+    // Clear form and switch to sign in tab
+    setEmail('');
+    setPassword('');
+    setName('');
     setSelectedTab("signin");
   };
-  
-  if (isSignedIn) {
-    return <Navigate to="/events" />;
-  }
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-4">
