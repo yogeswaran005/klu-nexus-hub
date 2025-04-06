@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogOut, UserCog } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '../context/AuthContext';
 
@@ -43,6 +43,16 @@ const Navbar = () => {
                   {user?.name || user?.email} ({user?.role})
                   {user?.club && ` - ${user?.club}`}
                 </span>
+                <Link to="/profile/edit">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="bg-transparent border-white text-white hover:bg-white hover:text-blue-600"
+                  >
+                    <UserCog className="h-4 w-4 mr-2" />
+                    Profile
+                  </Button>
+                </Link>
                 <Button 
                   variant="outline" 
                   size="sm"

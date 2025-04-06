@@ -12,6 +12,7 @@ import EventDetail from "./pages/EventDetail";
 import Auth from "./pages/Auth";
 import InchargeDashboard from "./pages/InchargeDashboard";
 import CreateEvent from "./pages/CreateEvent";
+import EditProfile from "./pages/EditProfile";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
 
@@ -33,6 +34,11 @@ const App = () => {
               <Route path="/home" element={<Index />} />
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />
+              <Route path="/profile/edit" element={
+                <ProtectedRoute>
+                  <EditProfile />
+                </ProtectedRoute>
+              } />
               <Route path="/dashboard" element={
                 <ProtectedRoute requiredRole="incharge">
                   <InchargeDashboard />
