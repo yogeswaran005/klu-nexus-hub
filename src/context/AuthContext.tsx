@@ -1,7 +1,7 @@
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-type Role = 'student' | 'incharge';
+export type Role = 'student' | 'incharge';
 
 interface User {
   email: string;

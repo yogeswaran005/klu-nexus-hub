@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "../context/AuthContext";
+import type { Role } from "../context/AuthContext"; // Import the Role type
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState<Role>('student'); // Explicitly type as Role
   const [club, setClub] = useState('');
   
   const clubs = [
@@ -49,7 +50,7 @@ const Auth = () => {
     // Simulate a successful login
     const userData = {
       email,
-      role,
+      role, // This is now explicitly typed as Role
       name: role === "incharge" ? `${club} Incharge` : "KLU Student",
       club: role === "incharge" ? club : null
     };
@@ -151,7 +152,7 @@ const Auth = () => {
                       id="signin-role"
                       className="w-full p-2 border rounded-md"
                       value={role}
-                      onChange={(e) => setRole(e.target.value)}
+                      onChange={(e) => setRole(e.target.value as Role)}
                     >
                       <option value="student">Student</option>
                       <option value="incharge">Club Incharge</option>
@@ -201,7 +202,7 @@ const Auth = () => {
                       id="signup-role"
                       className="w-full p-2 border rounded-md"
                       value={role}
-                      onChange={(e) => setRole(e.target.value)}
+                      onChange={(e) => setRole(e.target.value as Role)}
                     >
                       <option value="student">Student</option>
                       <option value="incharge">Club Incharge</option>
